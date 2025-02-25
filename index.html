@@ -1,23 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home-work 8</title>
-    <link
-      href="
-https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.css
-"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="./css/style.css" />
+
+    <!-- Підключення стилів -->
+    <link rel="stylesheet" href="css/styles.css" />
   </head>
-  <body class="container">
+  <body>
     <ul class="gallery"></ul>
 
-    <script src="
-https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js
-"></script>
-    <script type="module" src="./js/gallery.js"></script>
+    <!-- Підключення basicLightbox (краще перед закриттям body) -->
+    <script src="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.min.css"
+    />
+
+    <!-- Підключення твого скрипта -->
+    <script src="./js/gallery.js"></script>
   </body>
 </html>

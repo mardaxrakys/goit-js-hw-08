@@ -64,55 +64,54 @@ const images = [
   },
 ];
 
-const gallery = document.querySelector('.gallery');
+const galleryContainer = document.querySelector('.gallery');
 
-gallery.addEventListener('click', onClickOpenImg);
-
-const imgItems = images
-  .map(
-    ({ preview, original, description }) =>
-      ` <li class="gallery-item">
+// Генерація розмітки галереї
+const galleryMarkup = images
+  .map(({ preview, original, description }) => {
+    return `
+      <li class="gallery-item">
         <a class="gallery-link" href="${original}">
-            <img
-                class="gallery-image"
-                src="${preview}"
-                data-source="${original}"
-                alt="${description}"
-                width='360'
-            />
+          <img
+            class="gallery-image"
+            src="${preview}"
+            data-source="${original}"
+            alt="${description}"
+          />
         </a>
-    </li>`
-  )
+      </li>
+    `;
+  })
   .join('');
 
-gallery.insertAdjacentHTML('beforeend', imgItems);
+galleryContainer.innerHTML = galleryMarkup;
 
-function onClickOpenImg(event) {
-  event.preventDefault();
+// Функція для відкриття модального вікна
+const openModal = (imageUrl) => {
+  const instance = basicLightbox.create(`
+    <img src="${imageUrl}" width="800" height="600">
+  `);
 
-  const { target } = event;
-
-  // if (!target.classList.contains('gallery-image')) {
-  //     return;
-  // }
-
-  if (target.nodeName !== 'IMG') {
-    return;
-  }
-
-  const instance = basicLightbox.create(
-    `<img src="${target.dataset.source}" alt="${target.alt}" width="1280">`
-  );
   instance.show();
 
-  const keyPress = (event) => {
-    if (event.code === 'Escape') {
+  // Закриття модального вікна при натисканні "Escape"
+  const closeOnEscape = (event) => {
+    if (event.key === 'Escape') {
       instance.close();
-      document.removeEventListener('keydown', keyPress);
+      document.removeEventListener('keydown', closeOnEscape);
     }
   };
 
-  if (instance.show()) {
-    document.addEventListener('keydown', keyPress);
-  }
-}
+  document.addEventListener('keydown', closeOnEscape);
+};
+
+// Обробник кліків на галереї (делегування подій)
+galleryContainer.addEventListener('click', (event) => {
+  event.preventDefault(); // Забороняємо завантаження зображення
+
+  const clickedImage = event.target;
+  if (clickedImage.nodeName !== 'IMG') return;
+
+  const largeImageUrl = clickedImage.dataset.source;
+  openModal(largeImageUrl);
+});
