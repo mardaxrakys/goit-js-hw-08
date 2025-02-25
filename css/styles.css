@@ -1,25 +1,16 @@
+/* Загальні стилі */
 button {
   cursor: pointer;
 }
 
 ul {
   list-style-type: none;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-left: 0;
+  margin: 0;
+  padding: 0;
 }
 
 a {
   text-decoration: none;
-}
-
-h1,
-h2,
-h3,
-h4,
-p {
-  margin-top: 0;
-  margin-bottom: 0;
 }
 
 img {
@@ -28,14 +19,14 @@ img {
   height: auto;
 }
 
+/* Контейнер */
 .container {
   max-width: 1128px;
   padding: 0 15px;
-
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
 }
 
+/* Галерея */
 .gallery {
   display: flex;
   flex-wrap: wrap;
@@ -53,41 +44,51 @@ img {
   transform: scale(1.05);
 }
 
+/* Стилі для модального вікна */
 .modal {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.9);
-  padding: 20px;
 }
 
 .modal-img {
-  max-width: 100%;
+  max-width: 90vw;
   max-height: 90vh;
+  object-fit: contain;
 }
 
+/* Закриття модального вікна */
 .close-btn {
   position: absolute;
-  top: 10px;
-  right: 20px;
-  font-size: 30px;
+  top: 20px;
+  right: 30px;
+  font-size: 35px;
   color: white;
   cursor: pointer;
+  background: none;
+  border: none;
 }
 
+/* Лічильник зображень */
 .counter {
   position: absolute;
-  top: 10px;
-  left: 20px;
-  font-size: 20px;
+  top: 20px;
+  left: 30px;
+  font-size: 22px;
   color: white;
 }
 
+/* Кнопки гортання */
 .prev-btn, .next-btn {
   position: absolute;
   top: 50%;
-  font-size: 40px;
+  font-size: 50px;
   color: white;
   background: none;
   border: none;
@@ -96,10 +97,10 @@ img {
 }
 
 .prev-btn {
-  left: 10px;
+  left: 20px;
 }
 
 .next-btn {
-  right: 10px;
+  right: 20px;
 }
 
