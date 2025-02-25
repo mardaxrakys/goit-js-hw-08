@@ -1,25 +1,16 @@
+/* Загальні стилі */
 button {
   cursor: pointer;
 }
 
 ul {
   list-style-type: none;
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-left: 0;
+  margin: 0;
+  padding: 0;
 }
 
 a {
   text-decoration: none;
-}
-
-h1,
-h2,
-h3,
-h4,
-p {
-  margin-top: 0;
-  margin-bottom: 0;
 }
 
 img {
@@ -28,14 +19,14 @@ img {
   height: auto;
 }
 
+/* Контейнер */
 .container {
   max-width: 1128px;
   padding: 0 15px;
-
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto;
 }
 
+/* Галерея */
 .gallery {
   display: flex;
   flex-wrap: wrap;
@@ -51,4 +42,18 @@ img {
 .gallery-item:hover,
 .gallery-item:focus {
   transform: scale(1.05);
+}
+
+/* Модальне вікно */
+.basicLightbox {
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.basicLightbox__placeholder img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
 }

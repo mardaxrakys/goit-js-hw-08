@@ -66,7 +66,7 @@ const images = [
 
 const galleryContainer = document.querySelector('.gallery');
 
-// Генерація розмітки галереї
+// Генеруємо розмітку галереї
 const galleryMarkup = images
   .map(({ preview, original, description }) => {
     return `
@@ -93,7 +93,7 @@ let instance = null;
 
 // Функція для відкриття модального вікна
 const openModal = (imageUrl) => {
-  currentIndex = imageUrls.indexOf(imageUrl); // Знаходимо індекс відкритого зображення
+  currentIndex = imageUrls.indexOf(imageUrl); // Отримуємо індекс відкритого зображення
 
   instance = basicLightbox.create(
     `
