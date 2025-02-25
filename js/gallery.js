@@ -1,7 +1,3 @@
-import * as basicLightbox from 'https://cdn.jsdelivr.net/npm/basiclightbox@5.0.4/dist/basicLightbox.module.min.js';
-
-// Масив зображень
-
 const images = [
   {
     preview:
@@ -68,56 +64,55 @@ const images = [
   },
 ];
 
-// Отримуємо посилання на контейнер галереї
-const galleryContainer = document.querySelector('.gallery');
+const gallery = document.querySelector('.gallery');
 
-// Створюємо розмітку галереї
-const galleryMarkup = images
+gallery.addEventListener('click', onClickOpenImg);
+
+const imgItems = images
   .map(
-    ({ preview, original, description }) => `
-    <li class="gallery-item">
-      <a class="gallery-link" href="${original}">
-        <img
-          class="gallery-image"
-          src="${preview}"
-          data-source="${original}"
-          alt="${description}"
-        />
-      </a>
+    ({ preview, original, description }) =>
+      ` <li class="gallery-item">
+        <a class="gallery-link" href="${original}">
+            <img
+                class="gallery-image"
+                src="${preview}"
+                data-source="${original}"
+                alt="${description}"
+                width='360'
+            />
+        </a>
     </li>`
   )
   .join('');
 
-// Додаємо розмітку у HTML
-galleryContainer.innerHTML = galleryMarkup;
+gallery.insertAdjacentHTML('beforeend', imgItems);
 
-// Додаємо делегування подій
-galleryContainer.addEventListener('click', onGalleryClick);
-
-function onGalleryClick(event) {
+function onClickOpenImg(event) {
   event.preventDefault();
 
-  const target = event.target;
-  if (target.nodeName !== 'IMG') return;
+  const { target } = event;
 
-  const largeImageURL = target.dataset.source;
+  // if (!target.classList.contains('gallery-image')) {
+  //     return;
+  // }
 
-  // Перевіряємо, чи бібліотека завантажена
-  if (typeof basicLightbox === 'undefined') {
-    console.error('basicLightbox не завантажено!');
+  if (target.nodeName !== 'IMG') {
     return;
   }
 
-  const instance = basicLightbox.create(`
-    <img src="${largeImageURL}" width="800" height="600">
-  `);
-
+  const instance = basicLightbox.create(
+    `<img src="${target.dataset.source}" alt="${target.alt}" width="1280">`
+  );
   instance.show();
 
-  // Закриття модального вікна натисканням Escape
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
+  const keyPress = (event) => {
+    if (event.code === 'Escape') {
       instance.close();
+      document.removeEventListener('keydown', keyPress);
     }
-  });
+  };
+
+  if (instance.show()) {
+    document.addEventListener('keydown', keyPress);
+  }
 }
