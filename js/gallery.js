@@ -86,23 +86,56 @@ const galleryMarkup = images
 
 galleryContainer.innerHTML = galleryMarkup;
 
+// Масив посилань на великі зображення
+const imageUrls = images.map((image) => image.original);
+let currentIndex = 0;
+let instance = null;
+
 // Функція для відкриття модального вікна
 const openModal = (imageUrl) => {
-  const instance = basicLightbox.create(`
+  currentIndex = imageUrls.indexOf(imageUrl); // Знаходимо індекс відкритого зображення
+
+  instance = basicLightbox.create(
+    `
     <img src="${imageUrl}" width="800" height="600">
-  `);
+  `,
+    {
+      onShow: () => document.addEventListener('keydown', handleKeyPress),
+      onClose: () => document.removeEventListener('keydown', handleKeyPress),
+    }
+  );
 
   instance.show();
+};
 
-  // Закриття модального вікна при натисканні "Escape"
-  const closeOnEscape = (event) => {
-    if (event.key === 'Escape') {
-      instance.close();
-      document.removeEventListener('keydown', closeOnEscape);
-    }
-  };
+// Функція для обробки клавіш
+const handleKeyPress = (event) => {
+  if (event.key === 'Escape') {
+    instance.close();
+  } else if (event.key === 'ArrowRight') {
+    showNextImage();
+  } else if (event.key === 'ArrowLeft') {
+    showPrevImage();
+  }
+};
 
-  document.addEventListener('keydown', closeOnEscape);
+// Функція для показу наступного зображення
+const showNextImage = () => {
+  currentIndex = (currentIndex + 1) % imageUrls.length; // Перехід до наступного (циклічно)
+  updateModalImage();
+};
+
+// Функція для показу попереднього зображення
+const showPrevImage = () => {
+  currentIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length; // Перехід назад (циклічно)
+  updateModalImage();
+};
+
+// Оновлення зображення у відкритому модальному вікні
+const updateModalImage = () => {
+  const newImageUrl = imageUrls[currentIndex];
+  const modalImage = instance.element().querySelector('img');
+  modalImage.src = newImageUrl;
 };
 
 // Обробник кліків на галереї (делегування подій)
@@ -112,6 +145,6 @@ galleryContainer.addEventListener('click', (event) => {
   const clickedImage = event.target;
   if (clickedImage.nodeName !== 'IMG') return;
 
-  const largeImageUrl = clickedImage.dataset.source;
+  const largeImageUrl = clickedImage.dataset.source; // Отримуємо посилання на велике зображення
   openModal(largeImageUrl);
 });
