@@ -1,0 +1,20 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# IDE / Editor
+.vscode/
+.idea/
+.DS_Store
+
+# Build files
+dist/
+build/
+
+# MacOS
+*.DS_Store
+
+# Other
+.env
