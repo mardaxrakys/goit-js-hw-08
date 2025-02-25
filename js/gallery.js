@@ -93,7 +93,7 @@ let instance = null;
 
 // Функція для відкриття модального вікна
 const openModal = (imageUrl) => {
-  currentIndex = imageUrls.indexOf(imageUrl); // Отримуємо індекс поточного зображення
+  currentIndex = imageUrls.indexOf(imageUrl);
 
   instance = basicLightbox.create(
     `
@@ -101,7 +101,7 @@ const openModal = (imageUrl) => {
       <span class="close-btn">&times;</span>
       <span class="counter">${currentIndex + 1}/${imageUrls.length}</span>
       <button class="prev-btn">&#10094;</button>
-      <img src="${imageUrl}" class="modal-img" width="800" height="600">
+      <img src="${imageUrl}" class="modal-img">
       <button class="next-btn">&#10095;</button>
     </div>
   `,
@@ -155,7 +155,7 @@ const updateModalImage = () => {
 
 // Обробник кліків на галереї (делегування подій)
 galleryContainer.addEventListener('click', (event) => {
-  event.preventDefault(); // Забороняємо завантаження зображення
+  event.preventDefault();
 
   const clickedImage = event.target;
   if (clickedImage.nodeName !== 'IMG') return;
