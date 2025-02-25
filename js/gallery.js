@@ -66,7 +66,7 @@ const images = [
 
 const galleryContainer = document.querySelector('.gallery');
 
-// Генерація розмітки галереї
+// Генеруємо розмітку галереї
 const galleryMarkup = images
   .map(({ preview, original, description }) => {
     return `
@@ -93,11 +93,17 @@ let instance = null;
 
 // Функція для відкриття модального вікна
 const openModal = (imageUrl) => {
-  currentIndex = imageUrls.indexOf(imageUrl); // Знаходимо індекс відкритого зображення
+  currentIndex = imageUrls.indexOf(imageUrl); // Отримуємо індекс поточного зображення
 
   instance = basicLightbox.create(
     `
-    <img src="${imageUrl}" width="800" height="600">
+    <div class="modal">
+      <span class="close-btn">&times;</span>
+      <span class="counter">${currentIndex + 1}/${imageUrls.length}</span>
+      <button class="prev-btn">&#10094;</button>
+      <img src="${imageUrl}" class="modal-img" width="800" height="600">
+      <button class="next-btn">&#10095;</button>
+    </div>
   `,
     {
       onShow: () => document.addEventListener('keydown', handleKeyPress),
@@ -106,9 +112,15 @@ const openModal = (imageUrl) => {
   );
 
   instance.show();
+
+  document
+    .querySelector('.close-btn')
+    .addEventListener('click', () => instance.close());
+  document.querySelector('.prev-btn').addEventListener('click', showPrevImage);
+  document.querySelector('.next-btn').addEventListener('click', showNextImage);
 };
 
-// Функція для обробки клавіш
+// Обробка клавіш
 const handleKeyPress = (event) => {
   if (event.key === 'Escape') {
     instance.close();
@@ -119,23 +131,26 @@ const handleKeyPress = (event) => {
   }
 };
 
-// Функція для показу наступного зображення
+// Функція для перегортання вперед
 const showNextImage = () => {
-  currentIndex = (currentIndex + 1) % imageUrls.length; // Перехід до наступного (циклічно)
+  currentIndex = (currentIndex + 1) % imageUrls.length;
   updateModalImage();
 };
 
-// Функція для показу попереднього зображення
+// Функція для перегортання назад
 const showPrevImage = () => {
-  currentIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length; // Перехід назад (циклічно)
+  currentIndex = (currentIndex - 1 + imageUrls.length) % imageUrls.length;
   updateModalImage();
 };
 
-// Оновлення зображення у відкритому модальному вікні
+// Оновлення зображення і лічильника у відкритому модальному вікні
 const updateModalImage = () => {
   const newImageUrl = imageUrls[currentIndex];
-  const modalImage = instance.element().querySelector('img');
+  const modalImage = instance.element().querySelector('.modal-img');
   modalImage.src = newImageUrl;
+
+  const counter = instance.element().querySelector('.counter');
+  counter.textContent = `${currentIndex + 1}/${imageUrls.length}`;
 };
 
 // Обробник кліків на галереї (делегування подій)
@@ -145,6 +160,6 @@ galleryContainer.addEventListener('click', (event) => {
   const clickedImage = event.target;
   if (clickedImage.nodeName !== 'IMG') return;
 
-  const largeImageUrl = clickedImage.dataset.source; // Отримуємо посилання на велике зображення
+  const largeImageUrl = clickedImage.dataset.source;
   openModal(largeImageUrl);
 });
